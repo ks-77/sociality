@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 
-from accounts.models import UserProfile
+from accounts.models import CustomUser
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -19,6 +19,6 @@ class UserForm(ModelForm):
 
 class UserProfileForm(ModelForm):
     class Meta:
-        model = UserProfile
+        model = CustomUser
         exclude = ["user"]
         fields = "__all__"

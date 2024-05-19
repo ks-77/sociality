@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
+from subscriptions.models import Subscription
 
 from accounts.models import UserProfile
-from subscriptions.models import Subscription
 
 
 class TestSubscriptionModel(TestCase):

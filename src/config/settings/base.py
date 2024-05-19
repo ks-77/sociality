@@ -44,12 +44,9 @@ INSTALLED_APPS = [
     "django_extensions",
     "location_field.apps.DefaultConfig",
     "accounts",
-    "comments",
+    "interactions",
     "core",
-    "likes",
-    "posts",
-    "stories",
-    "subscriptions",
+    "blog",
 ]
 
 MIDDLEWARE = [

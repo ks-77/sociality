@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 from django.utils import timezone
 
 from accounts.models import UserProfile
-from posts.models import Post
+from blog.models import Post
 
 
 class TestPostModel(TestCase):
@@ -21,9 +21,9 @@ class TestPostModel(TestCase):
         self.user_profile1.save()
 
     def tearDown(self):
-        default_storage.delete("posts/testphoto.jpg")
-        default_storage.delete("posts/testvideo.mp4")
-        default_storage.delete("posts/testfile.jpg")
+        default_storage.delete("blog/testphoto.jpg")
+        default_storage.delete("blog/testvideo.mp4")
+        default_storage.delete("blog/testfile.jpg")
 
     def test_create_photo_post(self):
         photo_file = SimpleUploadedFile("testphoto.jpg", b"photo_content", content_type="image/jpeg")
