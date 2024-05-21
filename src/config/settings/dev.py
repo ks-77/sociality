@@ -6,7 +6,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []  # NOQA
 
-INSTALLED_APPS += []  # NOQA
+INSTALLED_APPS += [  # NOQA
+    "crispy_forms",
+    "crispy_bootstrap5",
+]  # NOQA
 
 DATABASES = {
     "default": {
