@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-
 from rest_framework.serializers import ModelSerializer
 
 from blog.models import Post
@@ -8,7 +7,7 @@ from blog.models import Post
 class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
-        exclude = ['password']
+        exclude = ["password"]
 
 
 class CustomUserCreateSerializer(ModelSerializer):

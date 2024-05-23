@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
-
-from rest_framework.generics import RetrieveAPIView, CreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView
+from rest_framework.generics import (CreateAPIView, RetrieveAPIView,
+                                     RetrieveDestroyAPIView,
+                                     RetrieveUpdateAPIView)
 from rest_framework.viewsets import ModelViewSet
 
-from api.serializers import CustomUserSerializer, PostSerializer, StorySerializer, CustomUserCreateSerializer
-
+from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
+                             PostSerializer, StorySerializer)
 from blog.models import Post, Story
 
 
@@ -32,11 +33,11 @@ class PostDetailViewSet(RetrieveAPIView):
     serializer_class = PostSerializer
 
     def get_object(self):
-        return Post.objects.get(creator__pk=self.kwargs.get('pk'))
+        return Post.objects.get(creator__pk=self.kwargs.get("pk"))
 
 
 class StoryDetailViewSet(RetrieveAPIView):
     serializer_class = StorySerializer
 
     def get_object(self):
-        return Story.objects.get(creator__pk=self.kwargs.get('pk'))
+        return Story.objects.get(creator__pk=self.kwargs.get("pk"))
