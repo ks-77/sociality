@@ -19,19 +19,19 @@ class UserRegistrationForm(UserCreationForm):
             if CustomUser.objects.filter(email=email_or_phone).exists():
                 raise forms.ValidationError("A user with that email already exists.")
             self.cleaned_data["email"] = email_or_phone
-            self.cleaned_data["phone"] = None
+            self.cleaned_data["phone_number"] = None
         else:
             if CustomUser.objects.filter(phone=email_or_phone).exists():
                 raise forms.ValidationError("A user with that phone number already exists.")
             self.cleaned_data["email"] = None
-            self.cleaned_data["phone"] = email_or_phone
+            self.cleaned_data["phone_number"] = email_or_phone
         return email_or_phone
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = self.cleaned_data["username"]
         user.email = self.cleaned_data.get("email")
-        user.phone = self.cleaned_data.get("phone")
+        user.phone = self.cleaned_data.get("phone_number")
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
