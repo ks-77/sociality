@@ -31,8 +31,8 @@ class CustomUserDeleteView(RetrieveDestroyAPIView):
 
 class PostDetailViewSet(RetrieveAPIView):
     serializer_class = PostSerializer
-    lookup_field = 'id'
-    lookup_url_kwarg = 'id'
+    lookup_field = "id"
+    lookup_url_kwarg = "id"
 
     def get_object(self):
         return Post.objects.get(creator__pk=self.kwargs.get("pk"))
@@ -40,8 +40,8 @@ class PostDetailViewSet(RetrieveAPIView):
 
 class StoryDetailViewSet(RetrieveAPIView):
     serializer_class = StorySerializer
-    lookup_field = 'id'
-    lookup_url_kwarg = 'id'
+    lookup_field = "id"
+    lookup_url_kwarg = "id"
 
     def get_object(self):
         return Story.objects.get(creator__pk=self.kwargs.get("pk"))

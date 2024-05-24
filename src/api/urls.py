@@ -1,8 +1,9 @@
 from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework import routers, permissions
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework import permissions, routers
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
 from api.views import (CustomUserCreateView, CustomUserDeleteView,
                        CustomUserUpdateView, CustomUserViewSet,
