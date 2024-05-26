@@ -53,3 +53,17 @@ class UserForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ["username", "email", "phone_number"]
+
+    def clean_email_or_phone(self):
+        email_or_phone = self.cleaned_data.get("email_or_phone")
+        if "@" in email_or_phone:
+            if CustomUser.objects.filter(email=email_or_phone).exists():
+                raise forms.ValidationError("A user with that email already exists.")
+            self.cleaned_data["email"] = email_or_phone
+            self.cleaned_data["phone_number"] = None
+        else:
+            if CustomUser.objects.filter(phone_number=email_or_phone).exists():
+                raise forms.ValidationError("A user with that phone number already exists.")
+            self.cleaned_data["email"] = None
+            self.cleaned_data["phone_number"] = email_or_phone
+        return email_or_phone

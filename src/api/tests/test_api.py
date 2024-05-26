@@ -1,7 +1,12 @@
+import datetime
+from urllib.parse import urlparse
+
 from django.contrib.auth import get_user_model
+from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
                                    HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN,
@@ -25,6 +30,10 @@ class TestApi(TestCase):
         self.post = sample_post(creator=self.user, pk=1)
         self.story = sample_story(creator=self.user, pk=1)
 
+    def tearDown(self):
+        default_storage.delete("blog/posts/testfile.jpg")
+        default_storage.delete("blog/stories/testfile.jpg")
+
     def test_user_no_access(self):
         response = self.client.get(reverse("api:schema-swagger"))
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
@@ -37,14 +46,21 @@ class TestApi(TestCase):
     def test_post_detail(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse("api:post_detail", kwargs={"pk": self.user.pk, "id": self.post.id}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["id"], self.post.id)
+        self.assertEqual(response.data["description"], self.post.description)
+        self.assertEqual(urlparse(response.data["media_file"]).path, self.post.media_file.url)
+        self.assertEqual(response.data["location"], self.post.location)
+        self.assertEqual(timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")), self.post.creation_date)
 
     def test_story_detail(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse("api:story_detail", kwargs={"pk": self.user.pk, "id": self.story.id}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["id"], self.story.id)
+        self.assertEqual(urlparse(response.data["media_file"]).path, self.story.media_file.url)
+        self.assertEqual(response.data["location"], self.story.location)
+        self.assertEqual(timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")), self.story.creation_date)
 
     def test_create_user(self):
         self.client.force_authenticate(user=self.user)
