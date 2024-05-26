@@ -51,7 +51,10 @@ class TestApi(TestCase):
         self.assertEqual(response.data["description"], self.post.description)
         self.assertEqual(urlparse(response.data["media_file"]).path, self.post.media_file.url)
         self.assertEqual(response.data["location"], self.post.location)
-        self.assertEqual(timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")), self.post.creation_date)
+        self.assertEqual(
+            timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")),
+            self.post.creation_date,
+        )
 
     def test_story_detail(self):
         self.client.force_authenticate(user=self.user)
@@ -60,7 +63,10 @@ class TestApi(TestCase):
         self.assertEqual(response.data["id"], self.story.id)
         self.assertEqual(urlparse(response.data["media_file"]).path, self.story.media_file.url)
         self.assertEqual(response.data["location"], self.story.location)
-        self.assertEqual(timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")), self.story.creation_date)
+        self.assertEqual(
+            timezone.datetime.fromisoformat(response.data["creation_date"].replace("Z", "+00:00")),
+            self.story.creation_date,
+        )
 
     def test_create_user(self):
         self.client.force_authenticate(user=self.user)
