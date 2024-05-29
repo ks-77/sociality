@@ -20,11 +20,8 @@ jobs:
         ports:
           - 5432:5432
         env:
-          DB_NAME: POSTGRES_USER
-          DB_USER: mydatabaseuser
-          DB_PASSWORD: POSTGRES_PASSWORD
-          DB_HOST: localhost
-          DB_PORT: 5432
+          POSTGRES_PASSWORD: POSTGRES_PASSWORD
+
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
