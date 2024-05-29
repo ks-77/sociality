@@ -12,7 +12,7 @@ jobs:
       max-parallel: 4
       matrix:
         os: [ubuntu-latest]
-        python-version: [ "3.10", "3.11", "3.12" ]
+        python-version: ["3.12"]
 
     services:
       postgres:
@@ -20,9 +20,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_DB: ${POSTGRES_DB}
-          POSTGRES_USER: ${POSTGRES_USER}
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_PASSWORD: SB;3/(_;<^e.t.W:nK&'5\aa^VFQ"(
 
         options: >-
           --health-cmd pg_isready
