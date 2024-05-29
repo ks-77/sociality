@@ -473,4 +473,10 @@ iframe {
     padding-left: 15px;
     padding-right: 15px;
   }
-} 
+}
+
+.small-alert {
+    font-size: 0.875em; /* Adjust font size as needed */
+    padding: 5px;     /* Adjust padding as needed */
+    margin: 5px;      /* Adjust margin as needed */
+}

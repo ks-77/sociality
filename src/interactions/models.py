@@ -18,3 +18,6 @@ class Like(models.Model):
 class Subscription(models.Model):
     subscriber = models.ForeignKey(CustomUser, related_name="subscribers", on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, related_name="authors", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("subscriber", "author")

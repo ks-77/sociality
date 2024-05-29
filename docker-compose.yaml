@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  backend:
+#    image: sociality_image
+    build: ./
+    working_dir: /sociality
+    ports:
+      - "8000:8000"
+    command:
+      - ./commands/start_server_dev.sh
+    volumes:
+      - ./src:/sociality/src
+      - ./commands:/sociality/commands
+    env_file:
+      - .env
+
+
+
+  postgres:
+    image: postgres:16.3
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+
+volumes:
+  pg_data: { }

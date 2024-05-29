@@ -19,3 +19,9 @@ class Story(models.Model):
     media_file = models.FileField(upload_to="blog/stories/")
     location = PlainLocationField(based_fields=["city"], zoom=7, blank=True, null=True)
     creation_date = models.DateTimeField(_("creation date"), default=timezone.now)
+    expire_date = models.DateTimeField(_("expire date"), blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.expire_date:
+            self.expire_date = self.creation_date + timezone.timedelta(days=1)
+        super().save(*args, **kwargs)
