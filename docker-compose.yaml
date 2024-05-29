@@ -4,6 +4,7 @@ services:
   backend:
 #    image: sociality_image
     build: ./
+    container_name: sociality
     working_dir: /sociality
     ports:
       - "8000:8000"

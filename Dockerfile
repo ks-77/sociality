@@ -5,10 +5,11 @@ RUN apt update && mkdir /sociality
 WORKDIR /socialily
 
 COPY ./src ./src
+COPY ./commands ./commands
 COPY ./requirements.txt ./requirements.txt
 
 RUN python -m pip install --upgrade pip && pip install -r ./requirements.txt
 
 EXPOSE 8000
 
-CMD ["python", "src/manage.py", "runserver", "0:8000"]
+CMD ["bash"]
