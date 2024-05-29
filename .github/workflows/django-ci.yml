@@ -22,7 +22,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_PASSWORD: SB;3/(_;<^e.t.W:nK&'5\aa^VFQ"(
+          POSTGRES_PASSWORD: postgres
 
         options: >-
           --health-cmd pg_isready
