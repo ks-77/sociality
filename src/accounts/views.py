@@ -1,12 +1,16 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, TemplateView
 
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from accounts.models import CustomUser
+from blog.models import Post, Story
+from interactions.models import Subscription
 
 
 class UserLoginView(LoginView):
@@ -32,3 +36,20 @@ class UserRegistrationView(CreateView):
         user = form.save()
         login(self.request, user)
         return HttpResponseRedirect(self.get_success_url())
+
+
+class HomePageView(LoginRequiredMixin, TemplateView):
+    template_name = "common/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        user = self.request.user
+        following_users = Subscription.objects.filter(subscriber=user).values_list("author", flat=True)
+        context["posts"] = Post.objects.filter(creator__in=following_users).order_by("-creation_date")
+
+        current_time = timezone.now()
+        context["stories"] = Story.objects.filter(creator__in=following_users, expire_date__gt=current_time).order_by(
+            "-creation_date"
+        )
+
+        return context

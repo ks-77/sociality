@@ -19,10 +19,10 @@ class CustomUserCreateSerializer(ModelSerializer):
 class PostSerializer(ModelSerializer):
     class Meta:
         model = Post
-        fields = ["id", "media_file", "description", "location"]
+        fields = ["id", "media_file", "description", "location", "creation_date"]
 
 
 class StorySerializer(ModelSerializer):
     class Meta:
         model = Post
-        fields = ["id", "media_file", "location"]
+        fields = ["id", "media_file", "location", "creation_date"]
