@@ -1,6 +1,10 @@
+from config.settings.base import *  # NOQA
+
+from dotenv import load_dotenv
+
 import os
 
-from config.settings.base import *  # NOQA
+load_dotenv()
 
 SECRET_KEY = "django-insecure--ff1lm@x^6fcwvd6+ewwoeu%f*5$3y34qfg$-^*-q8e+99co9s"
 
@@ -27,7 +31,7 @@ if os.environ.get("GITHUB_WORKFLOW"):
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
             "NAME": os.environ.get("POSTGRES_DB"),
             "USER": os.environ.get("POSTGRES_USER"),
             "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
@@ -39,11 +43,11 @@ else:
         }
     }
 
-
-#     "default_sqlite": {
+# DATABASES = {
+#     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
 #         "NAME": BASE_DIR / "db.sqlite3",  # NOQA
-#     },
+#     }
 # }
 
 STATIC_URL = "static/"
