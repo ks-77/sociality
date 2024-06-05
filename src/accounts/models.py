@@ -41,7 +41,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
-    avatar = models.ImageField(upload_to="avatars/users/", default="avatar/default.jpg")
+    avatar = models.ImageField(upload_to="avatars/users/", default="avatars/default.jpg")
     name = models.CharField(max_length=50, blank=True, null=True, validators=[validate_name])
     bio = models.CharField(max_length=150, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
