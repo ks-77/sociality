@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, ListView, TemplateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from accounts.models import CustomUser
@@ -61,7 +61,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "user"
 
     def get_object(self, queryset=None):
-        pk = self.kwargs.get('pk')
+        pk = self.kwargs.get("pk")
         return get_object_or_404(CustomUser, pk=pk)
 
     def get_context_data(self, **kwargs):

@@ -1,6 +1,9 @@
-from config.settings.base import *  # NOQA
+import os
 
 from dotenv import load_dotenv
+
+from config.settings.base import *  # NOQA
+
 load_dotenv()
 
 SECRET_KEY = os.environ.get("SECRET_KEY")

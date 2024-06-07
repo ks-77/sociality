@@ -1,7 +1,8 @@
 from django.urls import path
 
 from accounts.forms import UserRegistrationForm
-from accounts.views import UserLoginView, UserLogoutView, UserRegistrationView, UserProfileView
+from accounts.views import (UserLoginView, UserLogoutView, UserProfileView,
+                            UserRegistrationView)
 
 app_name = "accounts"
 
