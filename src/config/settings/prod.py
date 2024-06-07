@@ -1,10 +1,16 @@
 from config.settings.base import *  # NOQA
 
-SECRET_KEY = "django-insecure--ff1lm@x^6fcwvd6+ewwoeu%f*5$3y34qfg$-^*-q8e+99co9s"
+from dotenv import load_dotenv
+load_dotenv()
 
-DEBUG = False
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = []
+DEBUG = True
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 DATABASES = {
     "default": {
@@ -13,4 +19,10 @@ DATABASES = {
     }
 }
 
+STATIC_ROOT = BASE_DIR / "static/"  # NOQA
+
 STATIC_URL = "static/"
+
+MEDIA_ROOT = BASE_DIR / "user_content/"  # NOQA
+
+MEDIA_URL = "user_content/"

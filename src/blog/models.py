@@ -7,7 +7,7 @@ from accounts.models import CustomUser
 
 
 class Post(models.Model):
-    creator = models.ForeignKey(CustomUser, related_name="post_creators", on_delete=models.CASCADE)
+    creator = models.ForeignKey(CustomUser, related_name="post", on_delete=models.CASCADE)
     media_file = models.FileField(upload_to="blog/posts/")
     description = models.CharField(max_length=150, blank=True, null=True)
     location = PlainLocationField(based_fields=["city"], zoom=7, blank=True, null=True)
@@ -15,7 +15,7 @@ class Post(models.Model):
 
 
 class Story(models.Model):
-    creator = models.ForeignKey(CustomUser, related_name="story_creators", on_delete=models.CASCADE)
+    creator = models.ForeignKey(CustomUser, related_name="story", on_delete=models.CASCADE)
     media_file = models.FileField(upload_to="blog/stories/")
     location = PlainLocationField(based_fields=["city"], zoom=7, blank=True, null=True)
     creation_date = models.DateTimeField(_("creation date"), default=timezone.now)

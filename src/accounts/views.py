@@ -2,10 +2,10 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView, DetailView
 
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from accounts.models import CustomUser
@@ -52,4 +52,23 @@ class HomePageView(LoginRequiredMixin, TemplateView):
             "-creation_date"
         )
 
+        return context
+
+
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = CustomUser
+    template_name = "user/profile.html"
+    context_object_name = "user"
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(CustomUser, pk=pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.object
+        context["posts"] = Post.objects.filter(creator=user).order_by("-creation_date")
+        context["followers_count"] = self.object.subscribers.count()
+        context["following_count"] = self.object.authors.count()
+        context["posts_count"] = self.object.post.count()
         return context
