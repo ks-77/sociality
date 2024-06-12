@@ -18,7 +18,7 @@
             .card {
                 width: 100%;
                 border: 2px solid #dee2e6; /* Рамка карточки */
-                border-radius: 5px; /* Сглаживание углов рамки */
+                border-radius: 10px; /* Сглаживание углов рамки */
             }
 
             .card-img-top {
@@ -60,7 +60,9 @@
 
                 <img class="card-img-top" src="{{ post.media_file.url }}" alt="Thumbnail">
                 <div class="card-body">
-                    <p class="card-text">{{ post.description }}</p>
+                    {% if post.description is not none %}
+                        <p class="card-text">{{ post.description }}</p>
+                    {% endif %}
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-body-secondary">{{ post.creation_date|naturaltime }}</small>
                     </div>

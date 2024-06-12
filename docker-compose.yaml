@@ -4,12 +4,14 @@ services:
     container_name: sociality
     working_dir: /sociality
     ports:
-      - "8000:8000"
+      - ${LOCAL_PORT}:${WSGI_PORT}
     command:
-      - ./commands/start_server_dev.sh
+      - ./commands/start_server_${MODE}.sh
     volumes:
       - ./src:/sociality/src
       - ./commands:/sociality/commands
+      - static_content:/sociality/src/static
+      - media_content:/sociality/src/user_content
     env_file:
       - .env
     depends_on:
@@ -53,7 +55,25 @@ services:
     env_file:
       - .env
 
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - static_content:/sociality/src/static
+      - media_content:/sociality/src/user_content
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
+
+
 volumes:
   pg_data: { }
   pgadmin: { }
   mongo_data: { }
+  static_content: { }
+  media_content: { }

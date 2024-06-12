@@ -2,7 +2,7 @@ FROM python:3.12.0-slim
 
 RUN apt update && mkdir /sociality
 
-WORKDIR /socialily
+WORKDIR /sociality
 
 COPY ./src ./src
 COPY ./commands ./commands

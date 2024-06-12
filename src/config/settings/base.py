@@ -124,15 +124,15 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-STATIC_ROOT = os.path.join(os.path.join(BASE_DIR, "staticfiles"))
+# STATIC_ROOT = os.path.join(os.path.join(BASE_DIR, "staticfiles"))
+#
+# STATIC_URL = "/static/"
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, "user_content")
+#
+# MEDIA_URL = "/user_content/"
 
-STATIC_URL = "/static/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "user_content")
-
-MEDIA_URL = "/user_content/"
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
