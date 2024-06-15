@@ -23,7 +23,7 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    next_page = reverse_lazy("login")
+    next_page = reverse_lazy("accounts:login")
 
 
 class UserRegistrationView(CreateView):
@@ -60,15 +60,29 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = "user/profile.html"
     context_object_name = "user"
 
+    def post(self, request, *args, **kwargs):
+        author = self.get_object()
+
+        subscription, created = Subscription.objects.get_or_create(subscriber=request.user, author=author)
+        if not created:
+            subscription.delete()
+
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
         return get_object_or_404(CustomUser, pk=pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.object
-        context["posts"] = Post.objects.filter(creator=user).order_by("-creation_date")
-        context["followers_count"] = self.object.subscribers.count()
-        context["following_count"] = self.object.authors.count()
+        author = self.object
+        user = self.request.user
+        context["posts"] = Post.objects.filter(creator=author).order_by("-creation_date")
+        context["followers_count"] = self.object.authors.count()
+        context["following_count"] = self.object.subscribers.count()
         context["posts_count"] = self.object.post.count()
+        context["is_subscribed"] = Subscription.objects.filter(subscriber=user, author=author).exists()
         return context
+
+    def get_success_url(self):
+        return reverse_lazy("accounts:profile", kwargs={"pk": self.kwargs["pk"]})

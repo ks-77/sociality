@@ -17,16 +17,16 @@
 
             .card {
                 width: 100%;
-                border: 2px solid #dee2e6; /* Рамка карточки */
-                border-radius: 10px; /* Сглаживание углов рамки */
+                border: 2px solid #dee2e6;
+                border-radius: 10px;
             }
 
             .card-img-top {
                 width: 100%;
-                height: auto; /* Сохранение пропорций */
-                object-fit: cover; /* Обеспечение покрытия области без растяжения */
-                border: 2px solid #dee2e6; /* Рамка изображения */
-                border-radius: 5px 5px 0 0; /* Сглаживание углов рамки изображения */
+                height: auto;
+                object-fit: cover;
+                border: 2px solid #dee2e6;
+                border-radius: 5px 5px 0 0;
             }
 
             .btn-subscribe {
@@ -44,6 +44,35 @@
                 color: #333;
                 border-color: #333;
             }
+            .btn-primary {
+                background-color: #6a11cb;
+                border-color: #6a11cb;
+                padding: 10px 20px;
+                font-size: 1rem;
+                border-radius: 50px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #5511b2;
+                border-color: #5511b2;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-danger {
+                background-color: #ba2121;
+                border-color: #ba2121;
+                padding: 10px 20px;
+                font-size: 1rem;
+                border-radius: 50px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .btn-danger:hover {
+                background-color: #761c19;
+                border-color: #761c19;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
         </style>
     </head>
     <body>
@@ -51,12 +80,28 @@
         <div class="card shadow-sm bg-dark">
             <div class="card-body position-relative">
                 <p class="card-text d-flex align-items-center">
-                    <img src="{{ post.creator.avatar.url }}" alt="Profile Photo" class="rounded-circle me-2" width="32"
-                         height="32">
-                    <a class="card-text creator" href="#">{{ post.creator.username }}</a>
+                    <img src="{{ post.creator.avatar.url }}" alt="Profile Photo" class="rounded-circle me-2" width="40"
+                         height="40">
+                    <a class="card-text creator" href="{% url 'accounts:profile' post.creator.pk %}">{{ post.creator.username }}</a>
                 </p>
                 <!-- Add subscription button in the top-right corner -->
-                <button type="button" class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Subscribe</button>
+{#                <button type="button" class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Subscribe</button>#}
+            {% if request.user != post.creator %}
+                <form method="post" action="{% url 'blog:post' post.pk %}">
+
+                    {% if is_subscribed %}
+                        <button type="submit" name="subscription"
+                                class="btn btn-danger position-absolute top-0 end-0 mt-3 me-4">Unsubscribe
+                        </button>
+                    {% else %}
+                        <button type="submit" name="subscription"
+                                class="btn btn-primary position-absolute top-0 end-0 mt-3 me-4">Subscribe
+                        </button>
+                    {% endif %}
+                </form>
+{#        {% else %}#}
+{#                <button class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Edit</button>#}
+        {% endif %}
 
                 <img class="card-img-top" src="{{ post.media_file.url }}" alt="Thumbnail">
                 <div class="card-body">
@@ -97,7 +142,7 @@
                                      height="55"
                                      alt="Avatar">
                                 <div class="media-body">
-                                    <a class="card-text creator" href="#">{{ comment.user.username }}</a>
+                                    <a class="card-text creator" href="{% url 'accounts:profile' comment.user.pk %}">{{ comment.user.username }}</a>
                                     <div>{{ comment.content }}</div>
                                 </div>
                             </div>

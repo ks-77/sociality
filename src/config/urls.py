@@ -20,13 +20,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from accounts.views import HomePageView
+from accounts.views import HomePageView, UserLogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),
     path("home/", HomePageView.as_view(), name="home"),
+    # path("logout/", UserLogoutView.as_view(), name="logout"),
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
 ]

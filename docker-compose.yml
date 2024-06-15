@@ -9,7 +9,7 @@ services:
       - ./commands/start_server_${MODE}.sh
     volumes:
       - ./src:/sociality/src
-      - ./commands:/sociality/commands
+      - ./commands:/sociality/commands/
       - static_content:/sociality/src/static
       - media_content:/sociality/src/user_content
     env_file:
