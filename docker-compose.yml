@@ -1,4 +1,5 @@
 services:
+
   backend:
     build: ./
     container_name: sociality
@@ -27,6 +28,7 @@ services:
     env_file:
       - .env
 
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -41,19 +43,67 @@ services:
       - postgres
 
 
-  mongo:
-    image: mongo
-    restart: always
+  redis:
+    image: redis
     env_file:
       - .env
+    restart: on-failure
+    depends_on:
+      - backend
 
-  mongo-express:
-    image: mongo-express
+
+  redisadmin:
+    image: rediscommander/redis-commander:latest
+    container_name: redisadmin
+    hostname: redisadminold
     restart: always
     ports:
       - 8081:8081
     env_file:
       - .env
+
+  celery:
+    build: ./
+    container_name: celery
+    command:
+      - ./commands/start_celery.sh
+    restart: on-failure
+    volumes:
+      - ./src:/sociality
+      - ./commands:/sociality/commands
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - backend
+
+  celerybeat:
+    build: ./
+    container_name: celerybeat
+    command:
+      - ./commands/start_celerybeat.sh
+    restart: on-failure
+    volumes:
+      - ./src:/sociality
+      - ./commands:/sociality/commands
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - backend
+
+  flower:
+    build: ./
+    container_name: flower
+    volumes:
+      - ./src:/sociality
+    env_file:
+      - .env
+    command: celery -A config flower --broker=redis://redis
+    ports:
+      - 5555:5555
+    depends_on:
+      - celery
 
   nginx:
     image: nginx:1.19
@@ -71,9 +121,13 @@ services:
 
 
 
+networks:
+  backend:
+    driver: bridge
+
 volumes:
   pg_data: { }
   pgadmin: { }
-  mongo_data: { }
+#  mongo_data: { }
   static_content: { }
   media_content: { }

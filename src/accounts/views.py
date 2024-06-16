@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -9,6 +9,7 @@ from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from accounts.models import CustomUser
+from accounts.tasks import create_user_task
 from blog.models import Post, Story
 from interactions.models import Subscription
 
@@ -86,3 +87,8 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_success_url(self):
         return reverse_lazy("accounts:profile", kwargs={"pk": self.kwargs["pk"]})
+
+
+def create_student(request: HttpRequest) -> HttpResponse:
+    create_user_task.delay()
+    return HttpResponse("TASK STARTED, creating a student")

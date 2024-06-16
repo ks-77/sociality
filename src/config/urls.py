@@ -27,9 +27,9 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),
     path("home/", HomePageView.as_view(), name="home"),
-    # path("logout/", UserLogoutView.as_view(), name="logout"),
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
+    path("interactions/", include("interactions.urls")),
 ]
 
 if settings.DEBUG:
