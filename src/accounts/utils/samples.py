@@ -17,6 +17,7 @@ def generate_user():
     gender = fake.random_element(["Male", "Female", "Other"])
     pronouns = fake.random_element(["He/Him", "She/Her", "They/Them"])
     links = fake.url()
+    password = fake.password()
 
     response = requests.get("https://thispersondoesnotexist.com/", stream=True)
     response.raise_for_status()
@@ -35,7 +36,7 @@ def generate_user():
         links=links,
     )
     user.avatar.save(image_name, image_content, save=True)
-    user.set_password("password")
+    user.set_password(password)
     user.save()
 
     return user

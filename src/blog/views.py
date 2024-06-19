@@ -7,6 +7,7 @@ from django.views.generic import DetailView
 from blog.forms import PostForm
 from blog.models import Post
 from blog.tasks import create_post_task, create_story_task
+from core.forms import GenerationQuantityForm
 from interactions.forms import CommentForm
 from interactions.models import Like, Subscription
 
@@ -59,5 +60,14 @@ def create_story(request: HttpRequest) -> HttpResponse:
 
 
 def create_post(request: HttpRequest) -> HttpResponse:
-    create_post_task.delay()
-    return HttpResponse("TASK STARTED, creating a post")
+    message = None
+    if request.method == 'POST':
+        form = GenerationQuantityForm(request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            for _ in range(quantity):
+                create_post_task.delay()
+            message = "TASK STARTED, creating posts"
+    else:
+        form = GenerationQuantityForm()
+    return render(request, 'generate/general_generation(del).html', {'form': form, 'message': message})

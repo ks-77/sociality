@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import (CreateView, DetailView, ListView,
@@ -13,6 +13,7 @@ from accounts.forms import (UserForm, UserLoginForm, UserProfileForm,
 from accounts.models import CustomUser
 from accounts.tasks import create_user_task
 from blog.models import Post, Story
+from core.forms import GenerationQuantityForm
 from interactions.models import Subscription
 
 
@@ -124,5 +125,14 @@ class UpdateUserProfileView(LoginRequiredMixin, UpdateView):
 
 
 def create_student(request: HttpRequest) -> HttpResponse:
-    create_user_task.delay()
-    return HttpResponse("TASK STARTED, creating a student")
+    message = None
+    if request.method == 'POST':
+        form = GenerationQuantityForm(request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            for _ in range(quantity):
+                create_user_task.delay()
+            message = "TASK STARTED, creating students"
+    else:
+        form = GenerationQuantityForm()
+    return render(request, 'generate/general_generation(del).html', {'form': form, 'message': message})

@@ -1,0 +1,14 @@
+{% extends 'common/home.html' %}
+{% block content %}
+<body>
+    <h1>GENERATE</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">CREATE</button>
+    </form>
+    {% if message %}
+        <p style="color: green;">{{ message }}</p>
+    {% endif %}
+</body>
+{% endblock %}
