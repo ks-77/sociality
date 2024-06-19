@@ -1,8 +1,8 @@
 from django.urls import path
 
-from interactions.views import create_like, create_comment, create_subscription
+from interactions.views import create_comment, create_like, create_subscription
 
-app_name = 'interactions'
+app_name = "interactions"
 
 urlpatterns = [
     path("create-like/", create_like, name="create-like"),

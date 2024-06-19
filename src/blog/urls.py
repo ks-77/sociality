@@ -1,6 +1,5 @@
 from django.urls import path
 
-
 from blog.views import PostDetailView, create_post, create_story
 
 app_name = "blog"

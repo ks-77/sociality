@@ -171,14 +171,14 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_BEAT_SCHEDULE = {
     "periodic_create_user_task": {
         "task": "accounts.tasks.create_user_task",
-        "schedule": crontab(minute='*/40', hour='*/16', day_of_month='*/9', month_of_year='*/10')
+        "schedule": crontab(minute="*/40", hour="*/16", day_of_month="*/9", month_of_year="*/10"),
     },
     "periodic_create_post_task": {
         "task": "blog.tasks.create_post_task",
-        "schedule": crontab(minute='0', hour='12', day_of_week='*/2')
+        "schedule": crontab(minute="0", hour="12", day_of_week="*/2"),
     },
     "periodic_create_like_task": {
         "task": "interactions.tasks.create_like_task",
-        "schedule": crontab(minute='*/13', hour='13', day_of_month='13', day_of_week='5')
+        "schedule": crontab(minute="*/13", hour="13", day_of_month="13", day_of_week="5"),
     },
 }

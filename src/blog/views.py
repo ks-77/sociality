@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
 
 from blog.forms import PostForm
 from blog.models import Post
-from blog.tasks import create_story_task, create_post_task
+from blog.tasks import create_post_task, create_story_task
 from interactions.forms import CommentForm
 from interactions.models import Like, Subscription
 

@@ -1,5 +1,7 @@
 import random
+
 from faker import Faker
+
 from accounts.models import CustomUser
 from blog.models import Post
 from interactions.models import Comment, Like, Subscription

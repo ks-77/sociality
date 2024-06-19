@@ -1,7 +1,9 @@
 import datetime
 
 from celery import shared_task
-from interactions.utils.samples import generate_like, generate_comment, generate_subscription
+
+from interactions.utils.samples import (generate_comment, generate_like,
+                                        generate_subscription)
 
 
 @shared_task

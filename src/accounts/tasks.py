@@ -1,4 +1,5 @@
 from celery import shared_task
+
 from accounts.utils.samples import generate_user
 
 

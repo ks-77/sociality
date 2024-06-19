@@ -168,7 +168,7 @@
 <div class="container-lg">
     <div class="profile-card">
         <div class="profile-img">
-            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="rounded-circle">
+            <img src="{{ user.avatar.url }}" class="rounded-circle" alt="">
         </div>
         <h1>{{ user.username }}</h1>
         {% if user.bio != None %}
@@ -200,7 +200,7 @@
             </form>
         {% else %}
             <div class="d-flex justify-content-center mb-4">
-                <button class="btn btn-primary">Edit</button>
+                <a class="btn btn-primary" href="{% url 'accounts:profile_update' request.user.pk %}">Edit</a>
             </div>
         {% endif %}
     </div>

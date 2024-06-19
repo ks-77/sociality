@@ -1,7 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from interactions.tasks import create_like_task, create_subscription_task, create_comment_task
+from interactions.tasks import (create_comment_task, create_like_task,
+                                create_subscription_task)
 
 
 def create_like(request: HttpRequest) -> HttpResponse:

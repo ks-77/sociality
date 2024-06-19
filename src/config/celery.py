@@ -5,4 +5,4 @@ app.config_from_object(
     "django.conf.settings",
     namespace="CELERY",
 )
-app.autodiscover_tasks(['accounts', 'blog'])
+app.autodiscover_tasks(["accounts", "blog"])
