@@ -72,4 +72,4 @@ class UserForm(ModelForm):
 class UserProfileForm(ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'avatar', 'name', 'bio', 'date_of_birth', 'gender', 'pronouns', 'links']
+        fields = ["username", "avatar", "name", "bio", "date_of_birth", "gender", "pronouns", "links"]

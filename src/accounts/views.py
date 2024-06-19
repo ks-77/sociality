@@ -5,9 +5,11 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, DetailView, ListView, TemplateView, UpdateView
+from django.views.generic import (CreateView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
-from accounts.forms import UserLoginForm, UserRegistrationForm, UserForm, UserProfileForm
+from accounts.forms import (UserForm, UserLoginForm, UserProfileForm,
+                            UserRegistrationForm)
 from accounts.models import CustomUser
 from accounts.tasks import create_user_task
 from blog.models import Post, Story
@@ -92,7 +94,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 class UpdateUserProfileView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     model = CustomUser
-    template_name = 'user/profile-edit.html'
+    template_name = "user/profile-edit.html"
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
