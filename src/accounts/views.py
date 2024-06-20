@@ -130,8 +130,7 @@ def create_student(request: HttpRequest) -> HttpResponse:
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            for _ in range(quantity):
-                create_user_task.delay()
+            create_user_task.delay(quantity)
             message = "TASK STARTED, creating students"
     else:
         form = GenerationQuantityForm()

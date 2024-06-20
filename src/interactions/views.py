@@ -12,8 +12,7 @@ def create_like(request: HttpRequest) -> HttpResponse:
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            for _ in range(quantity):
-                create_like_task.delay()
+            create_like_task.delay(quantity)
             message = "TASK STARTED, creating likes"
     else:
         form = GenerationQuantityForm()
@@ -26,8 +25,7 @@ def create_comment(request: HttpRequest) -> HttpResponse:
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            for _ in range(quantity):
-                create_comment_task.delay()
+            create_comment_task.delay(quantity)
             message = "TASK STARTED, creating comments"
     else:
         form = GenerationQuantityForm()
@@ -40,8 +38,7 @@ def create_subscription(request: HttpRequest) -> HttpResponse:
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            for _ in range(quantity):
-                create_subscription_task.delay()
+            create_subscription_task.delay(quantity)
             message = "TASK STARTED, creating subscriptions"
     else:
         form = GenerationQuantityForm()
