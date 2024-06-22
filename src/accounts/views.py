@@ -126,12 +126,12 @@ class UpdateUserProfileView(LoginRequiredMixin, UpdateView):
 
 def create_student(request: HttpRequest) -> HttpResponse:
     message = None
-    if request.method == 'POST':
+    if request.method == "POST":
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
-            quantity = form.cleaned_data['quantity']
+            quantity = form.cleaned_data["quantity"]
             create_user_task.delay(quantity)
             message = "TASK STARTED, creating students"
     else:
         form = GenerationQuantityForm()
-    return render(request, 'generate/general_generation(del).html', {'form': form, 'message': message})
+    return render(request, "generate/general_generation(del).html", {"form": form, "message": message})

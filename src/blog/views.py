@@ -56,25 +56,25 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 def create_story(request: HttpRequest) -> HttpResponse:
     message = None
-    if request.method == 'POST':
+    if request.method == "POST":
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
-            quantity = form.cleaned_data['quantity']
+            quantity = form.cleaned_data["quantity"]
             create_post_task.delay(quantity)
             message = "TASK STARTED, creating posts"
     else:
         form = GenerationQuantityForm()
-    return render(request, 'generate/general_generation(del).html', {'form': form, 'message': message})
+    return render(request, "generate/general_generation(del).html", {"form": form, "message": message})
 
 
 def create_post(request: HttpRequest) -> HttpResponse:
     message = None
-    if request.method == 'POST':
+    if request.method == "POST":
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
-            quantity = form.cleaned_data['quantity']
+            quantity = form.cleaned_data["quantity"]
             create_post_task.delay(quantity)
             message = "TASK STARTED, creating posts"
     else:
         form = GenerationQuantityForm()
-    return render(request, 'generate/general_generation(del).html', {'form': form, 'message': message})
+    return render(request, "generate/general_generation(del).html", {"form": form, "message": message})
