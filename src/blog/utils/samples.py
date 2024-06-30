@@ -40,12 +40,7 @@ def generate_story():
 
     expire_date = timezone.now() + timezone.timedelta(days=1)
 
-    story = Story(
-        creator=user,
-        location=fake.location_on_land(),
-        media_file=image_content,
-        expire_date=expire_date
-    )
+    story = Story(creator=user, location=fake.location_on_land(), media_file=image_content, expire_date=expire_date)
     story.media_file.save(image_name, image_content, save=True)
     story.save()
     return story

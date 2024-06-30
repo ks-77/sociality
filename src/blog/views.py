@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, TemplateView, CreateView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from djoser.conf import User
 
 from blog.forms import PostForm
@@ -63,19 +63,19 @@ class UserStoriesView(LoginRequiredMixin, ListView):
     paginate_by = 1
 
     def get_queryset(self):
-        return Story.active().filter(creator=self.kwargs['pk']).order_by('-creation_date')
+        return Story.active().filter(creator=self.kwargs["pk"]).order_by("-creation_date")
 
 
 class CreationPageView(TemplateView):
-    template_name = 'creation/main_creation_page.html'
+    template_name = "creation/main_creation_page.html"
 
 
 class StoryCreationView(CreateView):
-    template_name = 'creation/create_story.html'
+    template_name = "creation/create_story.html"
 
 
 class PostCreationView(CreateView):
-    template_name = 'creation/create_post.html'
+    template_name = "creation/create_post.html"
 
 
 def create_story(request: HttpRequest) -> HttpResponse:
