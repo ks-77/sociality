@@ -86,6 +86,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         context["following_count"] = self.object.subscribers.count()
         context["posts_count"] = self.object.post.count()
         context["is_subscribed"] = Subscription.objects.filter(subscriber=user, author=author).exists()
+        context['user_stories'] = Story.active().filter(creator=author)
         return context
 
     def get_success_url(self):

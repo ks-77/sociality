@@ -77,6 +77,8 @@
         </style>
     </head>
     <body>
+    <div class="px-3 bg-dark">
+    <div class="album py-5 bg-body-tertiary">
     <div class="container">
         <div class="card shadow-sm bg-dark">
             <div class="card-body position-relative">
@@ -89,13 +91,14 @@
 {#                <button type="button" class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Subscribe</button>#}
             {% if request.user != post.creator %}
                 <form method="post" action="{% url 'blog:post' post.pk %}">
+                {% csrf_token %}
 
                     {% if is_subscribed %}
-                        <button type="submit" name="subscription"
+                        <button type="submit" name="subscribe"
                                 class="btn btn-danger position-absolute top-0 end-0 mt-3 me-4">Unsubscribe
                         </button>
                     {% else %}
-                        <button type="submit" name="subscription"
+                        <button type="submit" name="subscribe"
                                 class="btn btn-primary position-absolute top-0 end-0 mt-3 me-4">Subscribe
                         </button>
                     {% endif %}
@@ -114,6 +117,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <form method="post" action="{% url 'blog:post' post.pk %}">
+                        {% csrf_token %}
                             <button type="submit" name="like"
                                     class="btn btn-link p-0 m-0 d-inline-flex align-items-center">
                             <span class="text-body-secondary">
@@ -130,6 +134,7 @@
                 <div class="card-body">
                     <h5>Comments</h5>
                     <form method="post" action="{% url 'blog:post' post.pk %}">
+                    {% csrf_token %}
                         <div class="mb-3">
                             <label for="comment" class="form-label">Leave a comment:</label>
                             <textarea class="form-control" id="comment" name="content" rows="3" required></textarea>
@@ -152,6 +157,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

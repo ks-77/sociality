@@ -2,10 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView, CreateView, ListView
+from djoser.conf import User
 
 from blog.forms import PostForm
-from blog.models import Post
+from blog.models import Post, Story
 from blog.tasks import create_post_task, create_story_task
 from core.forms import GenerationQuantityForm
 from interactions.forms import CommentForm
@@ -44,14 +45,37 @@ class PostDetailView(LoginRequiredMixin, DetailView):
                 comment.post = post
                 comment.save()
 
-        subscription, created = Subscription.objects.get_or_create(subscriber=user, author=post.creator)
-        if not created:
-            subscription.delete()
+        if "subscribe" in request.POST:
+            subscription, created = Subscription.objects.get_or_create(subscriber=user, author=post.creator)
+            if not created:
+                subscription.delete()
 
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse_lazy("blog:post", kwargs={"pk": self.kwargs["pk"]})
+
+
+class UserStoriesView(LoginRequiredMixin, ListView):
+    model = Story
+    template_name = "blog/story.html"
+    context_object_name = "stories"
+    paginate_by = 1
+
+    def get_queryset(self):
+        return Story.active().filter(creator=self.kwargs['pk']).order_by('-creation_date')
+
+
+class CreationPageView(TemplateView):
+    template_name = 'creation/main_creation_page.html'
+
+
+class StoryCreationView(CreateView):
+    template_name = 'creation/create_story.html'
+
+
+class PostCreationView(CreateView):
+    template_name = 'creation/create_post.html'
 
 
 def create_story(request: HttpRequest) -> HttpResponse:
@@ -60,8 +84,8 @@ def create_story(request: HttpRequest) -> HttpResponse:
         form = GenerationQuantityForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data["quantity"]
-            create_post_task.delay(quantity)
-            message = "TASK STARTED, creating posts"
+            create_story_task.delay(quantity)
+            message = "TASK STARTED, creating stories"
     else:
         form = GenerationQuantityForm()
     return render(request, "generate/general_generation(del).html", {"form": form, "message": message})

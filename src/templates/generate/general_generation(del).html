@@ -1,6 +1,8 @@
 {% extends 'common/home.html' %}
 {% block content %}
 <body>
+<div class="px-3 bg-dark">
+    <div class="album py-5 bg-body-tertiary">
     <h1>GENERATE</h1>
     <form method="post">
         {% csrf_token %}
@@ -10,5 +12,7 @@
     {% if message %}
         <p style="color: green;">{{ message }}</p>
     {% endif %}
+    </div>
+</div>
 </body>
 {% endblock %}
