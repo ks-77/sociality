@@ -25,3 +25,7 @@ class Story(models.Model):
         if not self.expire_date:
             self.expire_date = self.creation_date + timezone.timedelta(days=1)
         super().save(*args, **kwargs)
+
+    @staticmethod
+    def active():
+        return Story.objects.filter(expire_date__gt=timezone.now())

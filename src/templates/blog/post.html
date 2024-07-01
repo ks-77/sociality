@@ -17,16 +17,17 @@
 
             .card {
                 width: 100%;
-                border: 2px solid #dee2e6; /* Рамка карточки */
-                border-radius: 10px; /* Сглаживание углов рамки */
+                border: 2px solid #dee2e6;
+                border-radius: 10px;
             }
 
             .card-img-top {
-                width: 100%;
-                height: auto; /* Сохранение пропорций */
-                object-fit: cover; /* Обеспечение покрытия области без растяжения */
-                border: 2px solid #dee2e6; /* Рамка изображения */
-                border-radius: 5px 5px 0 0; /* Сглаживание углов рамки изображения */
+                width: 860px; /* or set a fixed width in pixels, e.g., 300px */
+                height: 480px; /* set a fixed height */
+                object-fit: contain; /* scale the image to fit within the container without cropping */
+                object-position: center; /* center the image within the container */
+                border: 2px solid #dee2e6;
+                border-radius: 5px 5px 0 0;
             }
 
             .btn-subscribe {
@@ -44,19 +45,70 @@
                 color: #333;
                 border-color: #333;
             }
+            .btn-primary {
+                background-color: #6a11cb;
+                border-color: #6a11cb;
+                padding: 10px 20px;
+                font-size: 1rem;
+                border-radius: 50px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #5511b2;
+                border-color: #5511b2;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-danger {
+                background-color: #ba2121;
+                border-color: #ba2121;
+                padding: 10px 20px;
+                font-size: 1rem;
+                border-radius: 50px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .btn-danger:hover {
+                background-color: #761c19;
+                border-color: #761c19;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
         </style>
     </head>
     <body>
+    <div class="px-3 bg-dark">
+    <div class="album py-5 bg-body-tertiary">
     <div class="container">
         <div class="card shadow-sm bg-dark">
             <div class="card-body position-relative">
                 <p class="card-text d-flex align-items-center">
-                    <img src="{{ post.creator.avatar.url }}" alt="Profile Photo" class="rounded-circle me-2" width="32"
-                         height="32">
-                    <a class="card-text creator" href="#">{{ post.creator.username }}</a>
+                    <img src="{{ post.creator.avatar.url }}" alt="Profile Photo" class="rounded-circle me-2" width="40"
+                         height="40">
+                    <a class="card-text creator" href="{% url 'accounts:profile' post.creator.pk %}">{{ post.creator.username }}</a>
                 </p>
                 <!-- Add subscription button in the top-right corner -->
-                <button type="button" class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Subscribe</button>
+{#                <button type="button" class="btn btn-subscribe position-absolute top-0 end-0 mt-3 me-4">Subscribe</button>#}
+            {% if request.user != post.creator %}
+                <form method="post" action="{% url 'blog:post' post.pk %}">
+                {% csrf_token %}
+
+                    {% if is_subscribed %}
+                        <button type="submit" name="subscribe"
+                                class="btn btn-danger position-absolute top-0 end-0 mt-3 me-4">Unsubscribe
+                        </button>
+                    {% else %}
+                        <button type="submit" name="subscribe"
+                                class="btn btn-primary position-absolute top-0 end-0 mt-3 me-4">Subscribe
+                        </button>
+                    {% endif %}
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'blog:delete_post' post.pk %}" class="mt-3">
+                    {% csrf_token %}
+                    <a href="{% url 'blog:delete_post' post.pk %}" class="btn btn-danger position-absolute top-0 end-0 mt-3 me-4">Delete Post</a>
+                </form>
+            {% endif %}
 
                 <img class="card-img-top" src="{{ post.media_file.url }}" alt="Thumbnail">
                 <div class="card-body">
@@ -68,22 +120,25 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <form method="post" action="{% url 'blog:post' post.pk %}">
+                            {% csrf_token %}
                             <button type="submit" name="like"
                                     class="btn btn-link p-0 m-0 d-inline-flex align-items-center">
                             <span class="text-body-secondary">
-                <i class="fa fa-heart" aria-hidden="true"></i> {{ like_count }}
-            </span>
+                                <i class="fa fa-heart" aria-hidden="true"></i> {{ like_count }}
+                            </span>
                             </button>
                         </form>
                         <span class="text-body-secondary">
-        <i class="fa fa-comment" aria-hidden="true"></i> {{ comment_count }}
-    </span>
+                            <i class="fa fa-comment" aria-hidden="true"></i> {{ comment_count }}
+                        </span>
+                        
                     </div>
 
                 </div>
                 <div class="card-body">
                     <h5>Comments</h5>
                     <form method="post" action="{% url 'blog:post' post.pk %}">
+                    {% csrf_token %}
                         <div class="mb-3">
                             <label for="comment" class="form-label">Leave a comment:</label>
                             <textarea class="form-control" id="comment" name="content" rows="3" required></textarea>
@@ -97,7 +152,7 @@
                                      height="55"
                                      alt="Avatar">
                                 <div class="media-body">
-                                    <a class="card-text creator" href="#">{{ comment.user.username }}</a>
+                                    <a class="card-text creator" href="{% url 'accounts:profile' comment.user.pk %}">{{ comment.user.username }}</a>
                                     <div>{{ comment.content }}</div>
                                 </div>
                             </div>
@@ -106,6 +161,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

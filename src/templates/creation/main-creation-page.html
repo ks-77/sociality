@@ -1,0 +1,117 @@
+{% extends 'common/home.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post or Story</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f06, #4a90e2);
+            color: #333;
+        }
+        .create-container {
+            display: flex;
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .create-card {
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            width: 320px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .create-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .create-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 28px;
+            color: #007BFF;
+        }
+
+        .create-card p {
+            margin: 0 0 20px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .create-card a {
+            display: inline-block;
+            padding: 14px 32px;
+            border: 2px solid #007BFF;
+            border-radius: 40px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .create-card a:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .create-card {
+                width: calc(100% - 40px);
+                max-width: 100%;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main-content">
+            <div class="create-container">
+                <div class="create-card">
+                    <h3>Create Post</h3>
+                    <p>Share your thoughts and updates with your followers.</p>
+                    <a href="{% url 'blog:create_post' %}">Create Post</a>
+                </div>
+                <div class="create-card">
+                    <h3>Create Story</h3>
+                    <p>Share your moments and experiences with your followers.</p>
+                    <a href="{% url 'blog:create_story' %}">Create Story</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+{% endblock %}

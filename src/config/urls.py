@@ -20,7 +20,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from accounts.views import HomePageView
+from accounts.views import HomePageView, UserLogoutView
+
+handler404 = "core.views.custom_404_view"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,6 +31,8 @@ urlpatterns = [
     path("home/", HomePageView.as_view(), name="home"),
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
+    path("interactions/", include("interactions.urls")),
+    path("core/", include("core.urls")),
 ]
 
 if settings.DEBUG:

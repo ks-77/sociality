@@ -67,3 +67,9 @@ class UserForm(ModelForm):
             self.cleaned_data["email"] = None
             self.cleaned_data["phone_number"] = email_or_phone
         return email_or_phone
+
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ["username", "avatar", "name", "bio", "date_of_birth", "gender", "pronouns", "links"]

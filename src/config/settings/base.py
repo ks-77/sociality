@@ -14,6 +14,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_extensions",
     "drf_yasg",
+    "django_celery_beat",
     "rest_framework",
     "djoser",
     "location_field.apps.DefaultConfig",
@@ -48,7 +51,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -56,9 +59,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "login"
-LOGIN_URL = "login/"
+LOGIN_REDIRECT_URL = "/home/"
+LOGOUT_REDIRECT_URL = "/login/"
+LOGIN_URL = "/login/"
 
 
 AUTH_USER_MODEL = "accounts.CustomUser"
@@ -156,4 +159,26 @@ DJOSER = {
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/{uid}/{token}",
+}
+
+CELERY_BROKER_URL = "redis://redis"
+CELERY_BROKER_BACKEND = "redis://redis"
+
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESUL_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+
+CELERY_BEAT_SCHEDULE = {
+    "periodic_create_user_task": {
+        "task": "accounts.tasks.create_user_task",
+        "schedule": crontab(minute="*/40", hour="*/16", day_of_month="*/9", month_of_year="*/10"),
+    },
+    "periodic_create_post_task": {
+        "task": "blog.tasks.create_post_task",
+        "schedule": crontab(minute="0", hour="12", day_of_week="*/2"),
+    },
+    "periodic_create_like_task": {
+        "task": "interactions.tasks.create_like_task",
+        "schedule": crontab(minute="*/13", hour="13", day_of_month="13", day_of_week="5"),
+    },
 }
