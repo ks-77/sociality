@@ -1,8 +1,8 @@
 from django.urls import path
 
-from blog.views import (CreationPageView, PostCreationView, PostDetailView,
-                        StoryCreationView, UserStoriesView, create_post,
-                        create_story)
+from blog.views import (CreationPageView, PostCreationView, PostDeleteView,
+                        PostDetailView, StoryCreationView, StoryDeleteView,
+                        UserStoriesView, create_post, create_story)
 
 app_name = "blog"
 
@@ -15,4 +15,6 @@ urlpatterns = [
     path("creation-page/", CreationPageView.as_view(), name="creation_page"),
     path("create-post/", PostCreationView.as_view(), name="create_post"),
     path("create-story/", StoryCreationView.as_view(), name="create_story"),
+    path("delete-post/<int:pk>/", PostDeleteView.as_view(), name="delete_post"),
+    path("delete-story/<int:pk>/", StoryDeleteView.as_view(), name="delete_story"),
 ]

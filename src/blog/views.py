@@ -2,10 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, TemplateView
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView)
 from djoser.conf import User
 
-from blog.forms import PostForm
+from blog.forms import CreatePostForm, CreateStoryForm, PostForm
 from blog.models import Post, Story
 from blog.tasks import create_post_task, create_story_task
 from core.forms import GenerationQuantityForm
@@ -66,16 +67,54 @@ class UserStoriesView(LoginRequiredMixin, ListView):
         return Story.active().filter(creator=self.kwargs["pk"]).order_by("-creation_date")
 
 
-class CreationPageView(TemplateView):
-    template_name = "creation/main_creation_page.html"
+class CreationPageView(LoginRequiredMixin, TemplateView):
+    template_name = "creation/main-creation-page.html"
 
 
-class StoryCreationView(CreateView):
-    template_name = "creation/create_story.html"
+class StoryCreationView(LoginRequiredMixin, CreateView):
+    template_name = "blog/create-story.html"
+    form_class = CreateStoryForm
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("accounts:profile", kwargs={"pk": self.request.user.pk})
 
 
-class PostCreationView(CreateView):
-    template_name = "creation/create_post.html"
+class PostCreationView(LoginRequiredMixin, CreateView):
+    template_name = "blog/create-post.html"
+    form_class = CreatePostForm
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("accounts:profile", kwargs={"pk": self.request.user.pk})
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = "blog/delete-post.html"
+
+    def get_queryset(self):
+        return self.model.objects.filter(creator=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy("accounts:profile", kwargs={"pk": self.request.user.pk})
+
+
+class StoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Story
+    template_name = "blog/delete-story.html"
+
+    def get_queryset(self):
+        return Story.active().filter(creator=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy("accounts:profile", kwargs={"pk": self.request.user.pk})
 
 
 def create_story(request: HttpRequest) -> HttpResponse:

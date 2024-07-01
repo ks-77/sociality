@@ -112,7 +112,8 @@
                 <img src="{{ story.media_file.url }}" alt="Story Image">
                 <div class="card-body">
                     <div class="info">
-                        <a href="{% url 'accounts:profile' story.creator.pk %}" class="creator">{{ story.creator.username }}</a>
+                        <a href="{% url 'accounts:profile' story.creator.pk %}"
+                           class="creator">{{ story.creator.username }}</a>
                         <div class="dates">
                             <span>Created: {{ story.creation_date|date:"M d, Y H:i" }}</span><br>
                         </div>
@@ -121,6 +122,12 @@
                         <div class="location">
                             Location: {{ story.location }}
                         </div>
+                    {% endif %}
+                    {% if request.user == story.creator %}
+                        <form method="post" action="{% url 'blog:delete_story' story.pk %}" class="mt-3">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Story</button>
+                        </form>
                     {% endif %}
                 </div>
             </div>

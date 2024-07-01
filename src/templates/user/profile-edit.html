@@ -1,126 +1,141 @@
 {% extends 'common/home.html' %}
 {% load static %}
-<body> 
 {% block content %}
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-    <!-- Content -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+<body>
+    <!-- Content wrapper -->
+    <div class="content-wrapper">
+        <!-- Content -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <h4 class="py-5 mb-0"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <h4 class="card-header">Profile Details</h4>
-                    <!-- Account -->
-                    <div class="card-body">
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                <img src="{{ user.avatar.url }}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded-circle" width="240" height="240" id="avatar" />
-                                <div class="button-wrapper">
-                                    <label for="upload" class="btn btn-primary me-2 mb-3" tabindex="0">
-                                        <span class="d-none d-sm-block">Upload new photo</span>
-                                        <i class="mdi mdi-tray-arrow-up d-block d-sm-none"></i>
-                                        <input type="file" id="upload" name="avatar" class="account-file-input" hidden accept="image/png, image/jpeg" />
-                                    </label>
-                                    <button type="button" class="btn btn-outline-danger account-image-reset mb-3">
-                                        <i class="mdi mdi-reload d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Reset</span>
-                                    </button>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <h4 class="card-header">Profile Details</h4>
+                        <!-- Account -->
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                    <img src="{{ user.avatar.url }}" alt="user-avatar"
+                                         class="d-block w-px-120 h-px-120 rounded-circle" width="240" height="240"
+                                         id="avatar"/>
+                                    <div class="button-wrapper">
+                                        <label for="upload" class="btn btn-primary me-2 mb-3" tabindex="0">
+                                            <span class="d-none d-sm-block">Upload new photo</span>
+                                            <i class="mdi mdi-tray-arrow-up d-block d-sm-none"></i>
+                                            <input type="file" id="upload" name="avatar" class="account-file-input"
+                                                   hidden accept="image/png, image/jpeg"/>
+                                        </label>
+                                        <button type="button" class="btn btn-outline-danger account-image-reset mb-3">
+                                            <i class="mdi mdi-reload d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Reset</span>
+                                        </button>
 
-                                    <div class="text-muted small">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                        <div class="text-muted small">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="card-body pt-2 mt-1">
-                                <div class="row mt-2 gy-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="text" id="username" name="username" value="{{ user.username|default:'' }}" autofocus />
-                                            <label for="username">Username</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="text" id="name" name="name" value="{{ user.name|default:'' }}" autofocus />
-                                            <label for="name">Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="text" id="bio" name="bio" value="{{ user.bio|default:'' }}" autofocus />
-                                            <label for="bio">Bio</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="text" id="links" name="links" value="{{ user.links|default:'' }}" autofocus />
-                                            <label for="links">Links</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select class="form-control" id="gender" name="gender" autofocus>
-                                                <option value="" {% if user.gender == "" %}selected{% endif %}>Select
-                                                    gender
-                                                </option>
-                                                <option value="male" {% if user.gender == "male" %}selected{% endif %}>
-                                                    Male
-                                                </option>
-                                                <option value="female"
-                                                        {% if user.gender == "female" %}selected{% endif %}>Female
-                                                </option>
-                                                <option value="prefer not to say"
-                                                        {% if user.gender == "prefer not to say" %}selected{% endif %}>
-                                                    Prefer not to say
-                                                </option>
-                                            </select>
-                                            <label for="gender">Gender</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="text" id="pronouns" name="pronouns" value="{{ user.pronouns|default:'' }}" autofocus />
-                                            <label for="pronouns">Pronouns</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input class="form-control" type="email" id="email" name="email" value="{{ user.email|default:'' }}" placeholder="john.doe@example.com" />
-                                            <label for="email">E-mail</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-group input-group-merge">
+                                <div class="card-body pt-2 mt-1">
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
-                                                <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" value="{{ user.phone_number|default:'' }}" placeholder="202 555 0111" />
-                                                <label for="phoneNumber">Phone Number</label>
+                                                <input class="form-control" type="text" id="username" name="username"
+                                                       value="{{ user.username|default:'' }}" autofocus/>
+                                                <label for="username">Username</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input class="form-control" type="text" id="name" name="name"
+                                                       value="{{ user.name|default:'' }}" autofocus/>
+                                                <label for="name">Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input class="form-control" type="text" id="bio" name="bio"
+                                                       value="{{ user.bio|default:'' }}" autofocus/>
+                                                <label for="bio">Bio</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input class="form-control" type="text" id="links" name="links"
+                                                       value="{{ user.links|default:'' }}" autofocus/>
+                                                <label for="links">Links</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="form-control" id="gender" name="gender" autofocus>
+                                                    <option value="" {% if user.gender == "" %}selected{% endif %}>
+                                                        Select
+                                                        gender
+                                                    </option>
+                                                    <option value="male"
+                                                            {% if user.gender == "male" %}selected{% endif %}>
+                                                        Male
+                                                    </option>
+                                                    <option value="female"
+                                                            {% if user.gender == "female" %}selected{% endif %}>Female
+                                                    </option>
+                                                    <option value="prefer not to say"
+                                                            {% if user.gender == "prefer not to say" %}selected{% endif %}>
+                                                        Prefer not to say
+                                                    </option>
+                                                </select>
+                                                <label for="gender">Gender</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input class="form-control" type="text" id="pronouns" name="pronouns"
+                                                       value="{{ user.pronouns|default:'' }}" autofocus/>
+                                                <label for="pronouns">Pronouns</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input class="form-control" type="email" id="email" name="email"
+                                                       value="{{ user.email|default:'' }}"
+                                                       placeholder="john.doe@example.com"/>
+                                                <label for="email">E-mail</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group input-group-merge">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input class="form-control" type="text" id="phoneNumber"
+                                                           name="phoneNumber" value="{{ user.phone_number|default:'' }}"
+                                                           placeholder="202 555 0111"/>
+                                                    <label for="phoneNumber">Phone Number</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                {% if form.errors %}
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                        <div id="form_errors">
-                                            {% for key, value in form.errors.items %}
-                                                <strong>{{ value }}</strong>
-                                            {% endfor %}
+                                    {% if form.errors %}
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <div id="form_errors">
+                                                {% for key, value in form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                {% endfor %}
+                                            </div>
                                         </div>
+                                    {% endif %}
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-2" value="Update">Save changes
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
                                     </div>
-                                {% endif %}
-                                <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2" value="Update">Save changes</button>
-                                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <!-- /Account -->
                     </div>
-                    <!-- /Account -->
                 </div>
             </div>
         </div>
     </div>
-</div>
-  </body>
+    </body>
 {% endblock content %}
